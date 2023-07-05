@@ -1,0 +1,41 @@
+name: Build Linux
+
+on:
+  push:
+      branches:
+            - main
+              pull_request:
+                  branches:
+                        - main
+                        
+                        jobs:
+                          build:
+                              runs-on: ubuntu-latest
+                              
+                                  steps:
+                                        - name: Checkout code
+                                                uses: actions/checkout@v2
+                                                
+                                                      - name: Install Haxe
+                                                              uses: HaxeFoundation/setup-haxe@v1
+                                                                      with:
+                                                                                haxe-version: '4.2.5'
+                                                                                
+                                                                                      - name: Install Lime
+                                                                                              run: haxelib install lime
+                                                                                              
+                                                                                                    - name: Install OpenFL
+                                                                                                            run: haxelib install openfl
+                                                                                                            
+                                                                                                                  - name: Install Flixel
+                                                                                                                          run: haxelib install flixel
+                                                                                                                          
+                                                                                                                                - name: Build the project
+                                                                                                                                        run: lime build linux
+                                                                                                                                        
+                                                                                                                                              - name: Publish artifact
+                                                                                                                                                      uses: actions/upload-artifact@v2
+                                                                                                                                                              with:
+                                                                                                                                                                        name: linux-build
+                                                                                                                                                                                  path: export/linux/bin
+                                                                                                                                                                                  
